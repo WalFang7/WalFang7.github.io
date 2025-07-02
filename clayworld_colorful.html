@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClayWorld - Arcoíris de Creatividad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Bubblegum Sans', cursive;
+            line-height: 1.6;
+            color: #444;
+            background: linear-gradient(180deg,
+                #FFB3BA 0%,    /* Rosa pastel */
+                #FFDFBA 15%,   /* Naranja pastel */
+                #FFFFBA 30%,   /* Amarillo pastel */
+                #BAFFC9 45%,   /* Verde pastel */
+                #BAE1FF 60%,   /* Azul pastel */
+                #C9BAFF 75%,   /* Morado pastel */
+                #FFBAFF 90%,   /* Rosa-morado pastel */
+                #FFB3BA 100%   /* Rosa pastel final */
+            );
+            min-height: 100vh;
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 4px solid transparent;
+            border-image: linear-gradient(90deg, #FFB3BA, #FFDFBA, #FFFFBA, #BAFFC9, #BAE1FF, #C9BAFF) 1;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.5s ease;
+            font-family: 'Bubblegum Sans', cursive;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(-3deg);
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.8));
+        }
+
+        /* Letras del logo con colores individuales */
+        .logo .letter-c1 { color: #FF6B9D; } /* Rosa */
+        .logo .letter-l1 { color: #FF8E53; } /* Naranja */
+        .logo .letter-a1 { color: #FFBE0B; } /* Amarillo */
+        .logo .letter-y1 { color: #06FFA5; } /* Verde */
+        .logo .letter-w1 { color: #4ECDC4; } /* Turquesa */
+        .logo .letter-o1 { color: #45B7D1; } /* Azul */
+        .logo .letter-r1 { color: #96CEB4; } /* Verde claro */
+        .logo .letter-l2 { color: #9B59B6; } /* Morado */
+        .logo .letter-d1 { color: #E91E63; } /* Rosa fuerte */
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #444;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.4s ease;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.4));
+            border: 2px solid transparent;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #FFB3BA, #FFDFBA, #FFFFBA, #BAFFC9, #BAE1FF);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+
+        .nav-links a:hover::before {
+            left: 0;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            position: relative;
+            overflow: hidden;
+            padding: 140px 0 60px;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.15;
+            animation: float 8s ease-in-out infinite;
+            border-radius: 50%;
+        }
+
+        .shape:nth-child(1) {
+            top: 15%;
+            left: 10%;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #FFB3BA, #FFDFBA);
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            top: 25%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #FFFFBA, #BAFFC9);
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, #BAE1FF, #C9BAFF);
+            animation-delay: 4s;
+        }
+
+        .shape:nth-child(4) {
+            top: 60%;
+            right: 25%;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #FFBAFF, #FFB3BA);
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translateY(-30px) rotate(90deg) scale(1.1);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg) scale(0.9);
+            }
+            75% {
+                transform: translateY(-40px) rotate(270deg) scale(1.05);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 1000px;
+            animation: bubbleIn 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes bubbleIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(100px);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.1) translateY(-20px);
+            }
+            80% {
+                transform: scale(0.9) translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 2rem;
+            font-weight: 800;
+            text-shadow: 0 0 30px rgba(255,255,255,0.8);
+            animation: rainbowGlow 4s ease-in-out infinite alternate;
+            font-family: 'Bubblegum Sans', cursive;
+        }
+
+        @keyframes rainbowGlow {
+            0% { filter: drop-shadow(0 0 20px rgba(255,179,186,0.8)); }
+            25% { filter: drop-shadow(0 0 25px rgba(255,223,186,0.8)); }
+            50% { filter: drop-shadow(0 0 30px rgba(186,255,201,0.8)); }
+            75% { filter: drop-shadow(0 0 25px rgba(186,225,255,0.8)); }
+            100% { filter: drop-shadow(0 0 20px rgba(201,186,255,0.8)); }
+        }
+
+        .hero p {
+            font-size: 1.6rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+            background: linear-gradient(45deg, #FF6B9D, #4ECDC4, #9B59B6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Sección de imágenes interactivas */
+        .image-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 4rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .image-container {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+            border: 4px solid transparent;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #444;
+            text-align: center;
+            transition: all 0.6s ease;
+            backdrop-filter: blur(15px);
+            font-weight: 700;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #FFB3BA, #BAFFC9, #BAE1FF, #FFBAFF);
+            opacity: 0;
+            transition: all 0.4s ease;
+            border-radius: 26px;
+        }
+
+        .image-placeholder:hover::before {
+            opacity: 0.3;
+        }
+
+        .image-placeholder:hover {
+            transform: translateY(-15px) scale(1.05) rotate(2deg);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+            border-image: linear-gradient(45deg, #FFB3BA, #BAFFC9, #BAE1FF, #FFBAFF) 1;
+        }
+
+        .image-info {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+            color: #444;
+            padding: 3rem;
+            border-radius: 40px;
+            box-shadow: 0 30px 100px rgba(0,0,0,0.3);
+            max-width: 550px;
+            width: 90%;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 2000;
+            border: 4px solid transparent;
+            border-image: linear-gradient(45deg, #FFB3BA, #BAFFC9, #BAE1FF, #FFBAFF) 1;
+            backdrop-filter: blur(20px);
+        }
+
+        .image-info.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .image-info h3 {
+            background: linear-gradient(45deg, #FF6B9D, #4ECDC4, #9B59B6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+
+        .image-info p {
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+            color: #555;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: linear-gradient(45deg, #FF6B9D, #4ECDC4);
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            font-weight: bold;
+        }
+
+        .close-btn:hover {
+            background: linear-gradient(45deg, #9B59B6, #FF6B9D);
+            transform: rotate(180deg) scale(1.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 1500;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* PRODUCTOS */
+        .products-section {
+            padding: 8rem 0;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .products-section h2 {
+            text-align: center;
+            font-size: 3.5rem;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 2;
+            font-weight: 800;
+            background: linear-gradient(45deg, #FF6B9D, #FFBE0B, #06FFA5, #45B7D1, #9B59B6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInDown 1.2s ease-out;
+            font-family: 'Bubblegum Sans', cursive;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-80px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .products-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 8px;
+            background: linear-gradient(90deg, #FFB3BA, #BAFFC9, #BAE1FF, #FFBAFF);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 3rem;
+            margin-top: 5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3rem;
+            border-radius: 35px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 3px solid transparent;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,179,186,0.1), transparent, rgba(186,255,201,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.8s ease;
+            opacity: 0;
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
+            top: -100%;
+            left: -100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-20px) scale(1.03) rotate(1deg);
+            box-shadow: 0 35px 80px rgba(0,0,0,0.2);
+            border-image: linear-gradient(45deg, #FFB3BA, #BAFFC9, #BAE1FF, #FFBAFF) 1;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 240px;
+            background: linear-gradient(135deg, #FFB3BA, #BAFFC9);
+            border: 3px solid rgba(255,255,255,0.8);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            font-size: 3rem;
+            color: white;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card:hover .product-image {
+            background: linear-gradient(135deg, #BAE1FF, #FFBAFF);
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        .product-card h3 {
+            background: linear-gradient(45deg, #FF6B9D, #4ECDC4, #9B59B6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.2rem;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .product-card p {
+            color: #666;
+            line-height: 1.9;
+            margin-bottom: 2rem;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #06FFA5, #45B7D1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .product-btn {
+            background: linear-gradient(45deg, #FF6B9D, #FFBE0B, #06FFA5);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 1.2rem;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            font-family: 'Bubblegum Sans', cursive;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #9B59B6, #45B7D1, #4ECDC4);
+            transition: all 0.5s ease;
+        }
+
+        .product-btn:hover::before {
+            left: 0;
+        }
+
+        .product-btn:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .product-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Mobile Hamburger Menu */
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .mobile-menu span {
+            width: 30px;
+            height: 4px;
+            background: linear-gradient(45deg, #FF6B9D, #4ECDC4);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero p {
+                font-size: 1.4rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .logo {
+                font-size: 2.2rem;
+            }
+
+            .image-section {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .products-section h2 {
+                font-size: 2.8rem;
+            }
+
+            .image-info {
+                padding: 2.5rem;
+                margin: 0 20px;
+            }
+
+            .product-card {
+                padding: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .image-placeholder {
+                height: 220px;
+            }
+
+            .products-section h2 {
+                font-size: 2.4rem;
+            }
+
+            .product-image {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <nav class="container">
+            <a href="#" class="logo">
+                <span class="letter-c1">C</span><span class="letter-l1">l</span><span class="letter-a1">a</span><span class="letter-y1">y</span><span class="letter-w1">W</span><span class="letter-o1">o</span><span class="letter-r1">r</span><span class="letter-l2">l</span><span class="letter-d1">d</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#inicio">🏠 Inicio</a></li>
+                <li><a href="#productos">🛍️ Productos</a></li>
+            </ul>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero" id="inicio">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+
+        <div class="hero-content">
+            <h1>¡Bienvenidos a ClayWorld! 🌈</h1>
+            <p>✨ Crea, Moldea e Imagina ✨</p>
+
+            <div class="image-section">
+                <div class="image-container" onclick="showInfo('info1')">
+                    <div class="image-placeholder">
+                        <div>
+                            <strong>📖 Nuestra Historia Mágica</strong><br>
+                            <small>¡Descubre cómo comenzó todo! 👆</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image-container" onclick="showInfo('info2')">
+                    <div class="image-placeholder">
+                        <div>
+                            <strong>🎨 Proceso Arcoíris</strong><br>
+                            <small>¡Ve cómo creamos magia! 👆</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="closeInfo()"></div>
+
+    <!-- Información de imagen 1 -->
+    <div class="image-info" id="info1">
+        <button class="close-btn" onclick="closeInfo()">&times;</button>
+        <h3>🌟 Nuestra Historia Mágica</h3>
+        <p>¡Hola! Somos una familia apasionada por la arcilla y el arte. Todo comenzó cuando descubrimos la magia de crear con nuestras propias manos, como un arcoíris que se forma después de la lluvia. 🌈</p>
+        <p>Cada pieza que hacemos lleva amor, creatividad y todos los colores de la imaginación. ¡Queremos compartir esta magia multicolor contigo y hacer que cada día sea más colorido! ✨</p>
+    </div>
+
+    <!-- Información de imagen 2 -->
+    <div class="image-info" id="info2">
+        <button class="close-btn" onclick="closeInfo()">&times;</button>
+        <h3>🎨 Nuestro Proceso Arcoíris</h3>
+        <p>Cada creación pasa por un proceso súper especial: primero modelamos con amor y colores vibrantes, luego horneamos con cuidado siguiendo la temperatura perfecta, y finalmente pintamos con toda la alegría del arcoíris. 🌈</p>
+        <p>Usamos materiales seguros, no tóxicos y técnicas artesanales que garantizan que cada pieza sea única, duradera y llena de color. ¡La calidad y la magia van de la mano! 💫</p>
+    </div>
+
+    <section class="products-section" id="productos">
+        <div class="container">
+            <h2>🌈 Nuestros Productos Arcoíris</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        🎨 ¡TU IDEA!
+                    </div>
+                    <h3>✨ Creación Personalizada</h3>
+                    <p>¡Trae tu idea y nosotros la hacemos realidad! Diseña tu propia pieza única de arcilla. ¡Sin límites para tu imaginación!</p>
+                    <div class="product-price">💰 $10.00</div>
+                    <button class="product-btn"><span>🎨 ¡Quiero Crear!</span></button>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        🔑 LLAVEROS
+                    </div>
+                    <h3>🌟 Llaveros Mágicos</h3>
+                    <p>Adorables llaveros de arcilla pintados a mano. Perfectos para llevar un poquito de magia contigo a donde vayas.</p>
+                    <div class="product-price">💰 $3.00</div>
+                    <button class="product-btn"><span>🔑 ¡Los Quiero!</span></button>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        📎 FIGURAS
+                    </div>
+                    <h3>🏡 Pisapapeles Divertidos</h3>
+                    <p>Hermosas figuritas de arcilla que además de decorar, te ayudan a mantener tus papeles en orden. ¡Útiles y bonitos!</p>
+                    <div class="product-price">💰 $7.00</div>
+                    <button class="product-btn"><span>📎 ¡Perfecto!</span></button>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        🧲 IMANES
